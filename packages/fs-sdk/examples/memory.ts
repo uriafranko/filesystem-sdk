@@ -9,7 +9,7 @@ import {
   type UploadOptions,
   type UploadResult,
 } from "files-sdk";
-import { FileSystem } from "fs-sdk";
+import { FileSystem } from "@uriafranko/fs-sdk";
 
 // Memory is implemented as a files-sdk adapter; fs-sdk still only wraps files-sdk.
 interface MemoryEntry {

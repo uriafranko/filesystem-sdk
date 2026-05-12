@@ -6,10 +6,10 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "npm -w fs-sdk run build",
+    "build": "npm -w packages/fs-sdk run build",
     "smoke": "npm run typecheck && npm test && npm run build",
-    "test": "npm -w fs-sdk test",
-    "typecheck": "npm -w fs-sdk run typecheck",
+    "test": "npm -w packages/fs-sdk test",
+    "typecheck": "npm -w packages/fs-sdk run typecheck",
     "prepare": "husky"
   },
   "devDependencies": {
