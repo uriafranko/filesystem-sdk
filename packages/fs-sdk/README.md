@@ -122,6 +122,34 @@ console.log(result.stdout); // "hello\n"
 Call `hydratePaths()` when the backing object store already contains data and a
 consumer needs an eager path list through `getAllPaths()`.
 
+#### just-bash Integration Support
+
+The integration is a filesystem adapter for `just-bash`; it does not extend the
+shell parser or process model. Search-oriented shell workflows should use the
+built-in commands from the `just-bash` version you install rather than
+reimplementing them in `fs-sdk`.
+
+| Workflow or feature | Support | Notes |
+| --- | --- | --- |
+| Run scripts that read files by path | Supported | `readFile`, `readFileBuffer`, `exists`, `stat`, and `lstat` are implemented |
+| Write files from scripts | Supported | `writeFile` and `appendFile` update object storage and the in-memory path cache |
+| Relative paths and `cwd` | Supported | `resolvePath()` handles virtual path resolution for the shell runtime |
+| Directory operations | Supported | `mkdir`, `readdir`, and `readdirWithFileTypes` are implemented |
+| Copy, move, and remove | Supported | `cp`, `mv`, and `rm` work against the virtual filesystem |
+| Symlinks | Supported | `symlink`, `readlink`, and `realpath` are implemented |
+| File modes and timestamps | Metadata only | `chmod` and `utimes` persist metadata, but there is no OS-level user/group enforcement |
+| Eager path discovery | Supported with hydration | Use `hydratePaths()` when `getAllPaths()` must include files that already exist in object storage |
+| `ls`, `tree`, `du`, and `stat` | Supported by `just-bash` | These commands use the directory and metadata APIs exposed by this adapter |
+| Glob expansion, such as `*.ts` | Supported by `just-bash` | Fresh writes are cached automatically; hydrate first when matching paths that already existed in object storage |
+| `find` | Supported by `just-bash` | Recursive traversal uses `readdir`/`stat`; it can discover object-store contents without a separate search index |
+| `grep`, `egrep`, and `fgrep` | Supported by `just-bash` | Recursive search works, but it reads matching file bodies from object storage |
+| `rg` | Supported by `just-bash` | This is the `just-bash` implementation, not the native ripgrep binary; use `rg --help` for supported flags |
+| Search pipelines | Supported by `just-bash` | Pipes, redirects, `xargs`, `sort`, `uniq`, `wc`, `head`, `tail`, `sed`, and `awk` can compose with filesystem commands |
+| Server-side full-text search | Not supported | `fs-sdk` does not maintain an index; large searches cost object listings plus file downloads |
+| Host-specific commands outside `just-bash` | Not supported by `fs-sdk` | Add clean `just-bash` custom commands if your app needs a specific extra command |
+| Native executable binaries | Not supported by `fs-sdk` | Object-store files are stored bytes; `fs-sdk` does not execute OS processes |
+| TTY, job control, and background processes | Not supported by `fs-sdk` | These require a process runtime outside the filesystem adapter |
+
 ### From Raw Object Storage
 
 Use `OverlayFs` directly when you already have an object-storage implementation
@@ -154,6 +182,30 @@ const fs = new OverlayFs({
 
 Most methods intentionally follow familiar Node filesystem naming, but all work
 against the configured storage provider.
+
+## Compared With a Local Filesystem
+
+`fs-sdk` provides filesystem primitives over object storage. It is not a full
+Unix filesystem, kernel, or Bash environment. Shell features are only available
+when the shell runtime you pass this filesystem to implements them.
+
+| Feature | Local filesystem / shell | `fs-sdk` behavior |
+| --- | --- | --- |
+| `ls` | A shell command can list directories from the OS filesystem | Use `readdir()` or `readdirWithFileTypes()`; `ls` itself depends on the shell runtime |
+| Glob patterns like `*.ts` | Expanded by the shell or glob library | No built-in glob expansion; use `getAllPaths()` or `listPaths()` and filter paths yourself |
+| `grep` / text search | External command scans files on disk | No built-in search command or index; read file content and search in application code or through a shell runtime that provides `grep` |
+| Pipes and redirects | Managed by the shell and operating system | Not provided by `fs-sdk`; support depends on the command runner, such as `just-bash` |
+| Process execution | The OS runs binaries from the filesystem | `fs-sdk` stores files only; it does not execute native binaries |
+| Permissions and ownership | Enforced by the OS with users, groups, and modes | Modes are stored as metadata; OS-level users, groups, and permission enforcement are not provided |
+| Hard links | Multiple paths can point to the same inode | `link()` copies file content and metadata instead of sharing an inode |
+| File watching and locks | Provided by OS APIs such as inotify/FSEvents and advisory locks | Not supported |
+| Special files | Devices, sockets, FIFOs, and other node types can exist | Only files, directories, and symbolic links are modeled |
+| Random access / streaming writes | Local files can be updated in place | Object bodies are uploaded as whole objects |
+
+For Bash-like workflows, treat `fs-sdk` as the storage-backed filesystem layer.
+Use `just-bash` or another command runner for shell syntax and commands, and use
+`hydratePaths()` when that runner needs a complete eager path list through
+`getAllPaths()`.
 
 ## Configuration
 
