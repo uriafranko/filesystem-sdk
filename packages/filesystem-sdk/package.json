@@ -3,6 +3,11 @@
   "version": "0.1.0",
   "description": "A POSIX-like virtual filesystem overlay for files-sdk-compatible object storage, with just-bash integration.",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/uriafranko/filesystem-sdk.git",
+    "directory": "packages/filesystem-sdk"
+  },
   "sideEffects": false,
   "exports": {
     ".": {

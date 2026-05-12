@@ -12,7 +12,7 @@ A clear description of what is broken.
 
 ## Version
 
-`fs-sdk` version:
+`filesystem-sdk` version:
 
 ## Reproduction
 

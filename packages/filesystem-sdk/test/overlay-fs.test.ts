@@ -200,7 +200,7 @@ describe("OverlayFs", () => {
   });
 
   test("FileSystem accepts files-sdk constructor options", async () => {
-    const root = await mkdtemp(join(tmpdir(), "fs-sdk-"));
+    const root = await mkdtemp(join(tmpdir(), "filesystem-sdk-"));
     try {
       const fs = new FileSystem({
         adapter: localFilesAdapter({ root }),
@@ -217,7 +217,7 @@ describe("OverlayFs", () => {
   });
 
   test("FileSystem accepts an existing files-sdk instance", async () => {
-    const root = await mkdtemp(join(tmpdir(), "fs-sdk-"));
+    const root = await mkdtemp(join(tmpdir(), "filesystem-sdk-"));
     try {
       const files = new Files({
         adapter: localFilesAdapter({ root }),

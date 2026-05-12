@@ -11,7 +11,7 @@ import {
 } from "files-sdk";
 import { FileSystem } from "filesystem-sdk";
 
-// Memory is implemented as a files-sdk adapter; fs-sdk still only wraps files-sdk.
+// Memory is implemented as a files-sdk adapter; filesystem-sdk still only wraps files-sdk.
 interface MemoryEntry {
   bytes: Uint8Array;
   contentType: string;

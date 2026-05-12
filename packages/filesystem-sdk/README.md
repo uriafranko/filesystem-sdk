@@ -1,11 +1,11 @@
-# fs-sdk
+# filesystem-sdk
 
 A POSIX-like virtual filesystem layer for
 [`files-sdk`](https://github.com/haydenbleasel/files-sdk) storage providers,
 with an API that can be passed directly to
 [`just-bash`](https://github.com/vercel-labs/just-bash).
 
-`fs-sdk` keeps storage ownership in `files-sdk` and adds filesystem behavior on
+`filesystem-sdk` keeps storage ownership in `files-sdk` and adds filesystem behavior on
 top: paths, directories, metadata, symlinks, recursive copy/move/remove, and
 Node-style read/write operations over object storage.
 
@@ -47,7 +47,7 @@ console.log(text); // "# Hello\n"
 The `prefix` keeps filesystem data isolated inside the backing storage bucket or
 container. Use a different prefix for each workspace, tenant, session, or agent.
 
-## Why fs-sdk
+## Why filesystem-sdk
 
 - Use object storage through a filesystem-shaped API.
 - Keep provider adapters in `files-sdk` instead of duplicating storage logic.
@@ -61,7 +61,7 @@ container. Use a different prefix for each workspace, tenant, session, or agent.
 ### From a files-sdk Adapter
 
 Pass normal `files-sdk` constructor options to `FileSystem`. The adapter handles
-storage; `fs-sdk` handles filesystem semantics.
+storage; `filesystem-sdk` handles filesystem semantics.
 
 ```ts
 import { FileSystem } from "filesystem-sdk";
@@ -133,7 +133,7 @@ consumer needs an eager path list through `getAllPaths()`.
 The integration is a filesystem adapter for `just-bash`; it does not extend the
 shell parser or process model. Search-oriented shell workflows should use the
 built-in commands from the `just-bash` version you install rather than
-reimplementing them in `fs-sdk`.
+reimplementing them in `filesystem-sdk`.
 
 | Workflow or feature | Support | Notes |
 | --- | --- | --- |
@@ -151,10 +151,10 @@ reimplementing them in `fs-sdk`.
 | `grep`, `egrep`, and `fgrep` | Supported by `just-bash` | Recursive search works, but it reads matching file bodies from object storage |
 | `rg` | Supported by `just-bash` | This is the `just-bash` implementation, not the native ripgrep binary; use `rg --help` for supported flags |
 | Search pipelines | Supported by `just-bash` | Pipes, redirects, `xargs`, `sort`, `uniq`, `wc`, `head`, `tail`, `sed`, and `awk` can compose with filesystem commands |
-| Server-side full-text search | Not supported | `fs-sdk` does not maintain an index; large searches cost object listings plus file downloads |
-| Host-specific commands outside `just-bash` | Not supported by `fs-sdk` | Add clean `just-bash` custom commands if your app needs a specific extra command |
-| Native executable binaries | Not supported by `fs-sdk` | Object-store files are stored bytes; `fs-sdk` does not execute OS processes |
-| TTY, job control, and background processes | Not supported by `fs-sdk` | These require a process runtime outside the filesystem adapter |
+| Server-side full-text search | Not supported | `filesystem-sdk` does not maintain an index; large searches cost object listings plus file downloads |
+| Host-specific commands outside `just-bash` | Not supported by `filesystem-sdk` | Add clean `just-bash` custom commands if your app needs a specific extra command |
+| Native executable binaries | Not supported by `filesystem-sdk` | Object-store files are stored bytes; `filesystem-sdk` does not execute OS processes |
+| TTY, job control, and background processes | Not supported by `filesystem-sdk` | These require a process runtime outside the filesystem adapter |
 
 ### From Raw Object Storage
 
@@ -191,24 +191,24 @@ against the configured storage provider.
 
 ## Compared With a Local Filesystem
 
-`fs-sdk` provides filesystem primitives over object storage. It is not a full
+`filesystem-sdk` provides filesystem primitives over object storage. It is not a full
 Unix filesystem, kernel, or Bash environment. Shell features are only available
 when the shell runtime you pass this filesystem to implements them.
 
-| Feature | Local filesystem / shell | `fs-sdk` behavior |
+| Feature | Local filesystem / shell | `filesystem-sdk` behavior |
 | --- | --- | --- |
 | `ls` | A shell command can list directories from the OS filesystem | Use `readdir()` or `readdirWithFileTypes()`; `ls` itself depends on the shell runtime |
 | Glob patterns like `*.ts` | Expanded by the shell or glob library | No built-in glob expansion; use `getAllPaths()` or `listPaths()` and filter paths yourself |
 | `grep` / text search | External command scans files on disk | No built-in search command or index; read file content and search in application code or through a shell runtime that provides `grep` |
-| Pipes and redirects | Managed by the shell and operating system | Not provided by `fs-sdk`; support depends on the command runner, such as `just-bash` |
-| Process execution | The OS runs binaries from the filesystem | `fs-sdk` stores files only; it does not execute native binaries |
+| Pipes and redirects | Managed by the shell and operating system | Not provided by `filesystem-sdk`; support depends on the command runner, such as `just-bash` |
+| Process execution | The OS runs binaries from the filesystem | `filesystem-sdk` stores files only; it does not execute native binaries |
 | Permissions and ownership | Enforced by the OS with users, groups, and modes | Modes are stored as metadata; OS-level users, groups, and permission enforcement are not provided |
 | Hard links | Multiple paths can point to the same inode | `link()` copies file content and metadata instead of sharing an inode |
 | File watching and locks | Provided by OS APIs such as inotify/FSEvents and advisory locks | Not supported |
 | Special files | Devices, sockets, FIFOs, and other node types can exist | Only files, directories, and symbolic links are modeled |
 | Random access / streaming writes | Local files can be updated in place | Object bodies are uploaded as whole objects |
 
-For Bash-like workflows, treat `fs-sdk` as the storage-backed filesystem layer.
+For Bash-like workflows, treat `filesystem-sdk` as the storage-backed filesystem layer.
 Use `just-bash` or another command runner for shell syntax and commands, and use
 `hydratePaths()` when that runner needs a complete eager path list through
 `getAllPaths()`.
@@ -273,9 +273,9 @@ overlay usable with object stores that do not have native directories.
 
 This repository includes runnable TypeScript examples:
 
-- [Cloudflare R2](https://github.com/uriafranko/fs-sdk/blob/main/packages/fs-sdk/examples/cloudflare-r2.ts) - creates a filesystem over `files-sdk/r2`.
-- [Vercel Blob](https://github.com/uriafranko/fs-sdk/blob/main/packages/fs-sdk/examples/vercel-blob.ts) - creates a just-bash-compatible filesystem over `files-sdk/vercel-blob`.
-- [Memory](https://github.com/uriafranko/fs-sdk/blob/main/packages/fs-sdk/examples/memory.ts) - implements a small in-memory `files-sdk` adapter for local testing.
+- [Cloudflare R2](https://github.com/uriafranko/filesystem-sdk/blob/main/packages/filesystem-sdk/examples/cloudflare-r2.ts) - creates a filesystem over `files-sdk/r2`.
+- [Vercel Blob](https://github.com/uriafranko/filesystem-sdk/blob/main/packages/filesystem-sdk/examples/vercel-blob.ts) - creates a just-bash-compatible filesystem over `files-sdk/vercel-blob`.
+- [Memory](https://github.com/uriafranko/filesystem-sdk/blob/main/packages/filesystem-sdk/examples/memory.ts) - implements a small in-memory `files-sdk` adapter for local testing.
 
 ## Development
 
@@ -286,12 +286,12 @@ npm test
 npm run typecheck
 ```
 
-The package lives in `packages/fs-sdk`; repository-level scripts delegate to it
+The package lives in `packages/filesystem-sdk`; repository-level scripts delegate to it
 through npm workspaces.
 
 ## Acknowledgements
 
-`fs-sdk` is designed to work with and respect the existing ecosystems around:
+`filesystem-sdk` is designed to work with and respect the existing ecosystems around:
 
 - [`files-sdk`](https://github.com/haydenbleasel/files-sdk), an MIT-licensed
   storage SDK used as the backing provider layer.
@@ -301,4 +301,4 @@ through npm workspaces.
 ## License
 
 MIT. See
-[LICENSE](https://github.com/uriafranko/fs-sdk/blob/main/packages/fs-sdk/LICENSE).
+[LICENSE](https://github.com/uriafranko/filesystem-sdk/blob/main/packages/filesystem-sdk/LICENSE).

@@ -1,15 +1,15 @@
 {
-  "name": "fs-sdk-workspace",
+  "name": "filesystem-sdk-workspace",
   "private": true,
   "type": "module",
   "workspaces": [
     "packages/*"
   ],
   "scripts": {
-    "build": "npm -w packages/fs-sdk run build",
+    "build": "npm -w packages/filesystem-sdk run build",
     "smoke": "npm run typecheck && npm test && npm run build",
-    "test": "npm -w packages/fs-sdk test",
-    "typecheck": "npm -w packages/fs-sdk run typecheck",
+    "test": "npm -w packages/filesystem-sdk test",
+    "typecheck": "npm -w packages/filesystem-sdk run typecheck",
     "prepare": "husky"
   },
   "devDependencies": {

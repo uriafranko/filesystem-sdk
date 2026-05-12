@@ -34,7 +34,7 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/v')
         run: |
           TAG_VERSION="${GITHUB_REF_NAME#v}"
-          PACKAGE_VERSION="$(node -p "require('./packages/fs-sdk/package.json').version")"
+          PACKAGE_VERSION="$(node -p "require('./packages/filesystem-sdk/package.json').version")"
 
           if [ "$TAG_VERSION" != "$PACKAGE_VERSION" ]; then
             echo "Tag version ($TAG_VERSION) does not match package.json version ($PACKAGE_VERSION)"
@@ -42,6 +42,6 @@ jobs:
           fi
 
       - name: Publish package
-        run: npm publish --workspace packages/fs-sdk --access public --provenance
+        run: npm publish --workspace packages/filesystem-sdk --access public --provenance
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -1,4 +1,4 @@
-# Contributing to fs-sdk
+# Contributing to filesystem-sdk
 
 Thanks for taking the time to contribute. This package provides a POSIX-like filesystem overlay for `files-sdk`-compatible object storage, with optional `just-bash` integration.
 
@@ -12,11 +12,11 @@ Thanks for taking the time to contribute. This package provides a POSIX-like fil
 
 ## Repository Layout
 
-- `packages/fs-sdk/src` contains the library source.
-- `packages/fs-sdk/src/files-sdk` contains the `files-sdk` adapter integration.
-- `packages/fs-sdk/src/just-bash` contains the optional `just-bash` integration.
-- `packages/fs-sdk/test` contains Vitest coverage.
-- `packages/fs-sdk/examples` contains usage examples.
+- `packages/filesystem-sdk/src` contains the library source.
+- `packages/filesystem-sdk/src/files-sdk` contains the `files-sdk` adapter integration.
+- `packages/filesystem-sdk/src/just-bash` contains the optional `just-bash` integration.
+- `packages/filesystem-sdk/test` contains Vitest coverage.
+- `packages/filesystem-sdk/examples` contains usage examples.
 
 ## Local Checks
 
