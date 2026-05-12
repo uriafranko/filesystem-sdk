@@ -1,5 +1,5 @@
 import { r2 } from "files-sdk/r2";
-import { FileSystem } from "@uriafranko/fs-sdk";
+import { FileSystem } from "filesystem-sdk";
 
 // Storage adapters come from files-sdk. FileSystem adds fs-like operations.
 const fs = new FileSystem({

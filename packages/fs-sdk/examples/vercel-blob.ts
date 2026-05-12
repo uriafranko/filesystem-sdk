@@ -1,5 +1,5 @@
 import { vercelBlob } from "files-sdk/vercel-blob";
-import { FileSystem } from "@uriafranko/fs-sdk";
+import { FileSystem } from "filesystem-sdk";
 
 // Storage adapters come from files-sdk. FileSystem is also just-bash-compatible.
 const fs = new FileSystem({

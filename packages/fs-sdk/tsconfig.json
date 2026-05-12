@@ -6,9 +6,9 @@
     "outDir": "dist",
     "noEmit": true,
     "paths": {
-      "@uriafranko/fs-sdk": ["src/index.ts"],
-      "@uriafranko/fs-sdk/files-sdk": ["src/files-sdk/index.ts"],
-      "@uriafranko/fs-sdk/just-bash": ["src/just-bash/index.ts"]
+      "filesystem-sdk": ["src/index.ts"],
+      "filesystem-sdk/files-sdk": ["src/files-sdk/index.ts"],
+      "filesystem-sdk/just-bash": ["src/just-bash/index.ts"]
     }
   },
   "include": ["src", "test", "examples"]
