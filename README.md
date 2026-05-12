@@ -1,1 +1,1 @@
-packages/fs-sdk/README.md
+packages/filesystem-sdk/README.md
