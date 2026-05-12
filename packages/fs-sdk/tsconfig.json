@@ -1,9 +1,15 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
+    "baseUrl": ".",
     "rootDir": ".",
     "outDir": "dist",
-    "noEmit": true
+    "noEmit": true,
+    "paths": {
+      "fs-sdk": ["src/index.ts"],
+      "fs-sdk/files-sdk": ["src/files-sdk/index.ts"],
+      "fs-sdk/just-bash": ["src/just-bash/index.ts"]
+    }
   },
-  "include": ["src", "test"]
+  "include": ["src", "test", "examples"]
 }

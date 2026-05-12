@@ -1,6 +1,12 @@
+import { mkdtemp, rm } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+
+import { Files } from "files-sdk";
+import { fs as localFilesAdapter } from "files-sdk/fs";
 import { describe, expect, test } from "vitest";
 
-import { OverlayFs } from "../src/index.js";
+import { FileSystem, OverlayFs } from "../src/index.js";
 import { filesSdkStorage, overlayFromFilesSdk } from "../src/files-sdk/index.js";
 import { createJustBashFs } from "../src/just-bash/index.js";
 import { MemoryStorage } from "./memory-storage.js";
@@ -191,5 +197,41 @@ describe("OverlayFs", () => {
     expect(await fs.readFile("/home/user/test.txt")).toBe("ok");
     expect(fs.getAllPaths()).toContain("/home/user/test.txt");
     expect(await fs.readFileBytes("/home/user/test.txt")).toBe("ok");
+  });
+
+  test("FileSystem accepts files-sdk constructor options", async () => {
+    const root = await mkdtemp(join(tmpdir(), "fs-sdk-"));
+    try {
+      const fs = new FileSystem({
+        adapter: localFilesAdapter({ root }),
+        prefix: "overlay",
+      });
+
+      await fs.writeFile("/doc.md", "# title");
+
+      expect(await fs.readFile("/doc.md")).toBe("# title");
+      expect(await fs.readdir("/")).toEqual(["doc.md"]);
+    } finally {
+      await rm(root, { recursive: true, force: true });
+    }
+  });
+
+  test("FileSystem accepts an existing files-sdk instance", async () => {
+    const root = await mkdtemp(join(tmpdir(), "fs-sdk-"));
+    try {
+      const files = new Files({
+        adapter: localFilesAdapter({ root }),
+      });
+      const fs = new FileSystem({
+        files,
+        prefix: "overlay",
+      });
+
+      await fs.writeFile("/doc.md", "# title");
+
+      expect(await fs.readFile("/doc.md")).toBe("# title");
+    } finally {
+      await rm(root, { recursive: true, force: true });
+    }
   });
 });

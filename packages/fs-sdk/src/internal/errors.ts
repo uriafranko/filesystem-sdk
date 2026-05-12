@@ -47,13 +47,36 @@ export const storageError = (operation: string, cause: unknown): OverlayFsError 
     { cause },
   );
 
-export const isNotFoundError = (error: unknown): boolean => {
+export const isNotFoundError = (
+  error: unknown,
+  seen = new Set<unknown>(),
+): boolean => {
+  if (seen.has(error)) {
+    return false;
+  }
+  seen.add(error);
+
   if (error instanceof OverlayFsError) {
     return error.code === "ENOENT";
   }
   if (error && typeof error === "object" && "code" in error) {
     const code = (error as { code?: unknown }).code;
-    return code === "ENOENT" || code === "NotFound";
+    if (code === "ENOENT" || code === "NotFound") {
+      return true;
+    }
+  }
+  if (error && typeof error === "object" && "$metadata" in error) {
+    const metadata = (error as { $metadata?: { httpStatusCode?: number } })
+      .$metadata;
+    if (metadata?.httpStatusCode === 404) {
+      return true;
+    }
+  }
+  if (error && typeof error === "object" && "cause" in error) {
+    const cause = (error as { cause?: unknown }).cause;
+    if (cause && isNotFoundError(cause, seen)) {
+      return true;
+    }
   }
   if (error instanceof Error) {
     return /not found|no such file|ENOENT/i.test(error.message);

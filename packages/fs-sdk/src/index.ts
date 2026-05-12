@@ -1,3 +1,9 @@
+export { FileSystem } from "./file-system.js";
+export type {
+  FileSystemFromAdapterOptions,
+  FileSystemFromFilesOptions,
+  FileSystemOptions,
+} from "./file-system.js";
 export { OverlayFs } from "./overlay-fs.js";
 export { OverlayFsError } from "./internal/errors.js";
 export type { OverlayFsErrorCode } from "./internal/errors.js";
