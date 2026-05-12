@@ -1,5 +1,5 @@
 {
-  "name": "fs-sdk",
+  "name": "filesystem-sdk",
   "version": "0.1.0",
   "description": "A POSIX-like virtual filesystem overlay for files-sdk-compatible object storage, with just-bash integration.",
   "type": "module",

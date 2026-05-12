@@ -12,17 +12,17 @@ Node-style read/write operations over object storage.
 ## Installation
 
 ```bash
-npm install fs-sdk
+npm install filesystem-sdk
 ```
 
 ## Quick Start
 
 ```bash
-npm install fs-sdk files-sdk
+npm install filesystem-sdk files-sdk
 ```
 
 ```ts
-import { FileSystem } from "fs-sdk";
+import { FileSystem } from "filesystem-sdk";
 import { r2 } from "files-sdk/r2";
 
 const fs = new FileSystem({
@@ -64,7 +64,7 @@ Pass normal `files-sdk` constructor options to `FileSystem`. The adapter handles
 storage; `fs-sdk` handles filesystem semantics.
 
 ```ts
-import { FileSystem } from "fs-sdk";
+import { FileSystem } from "filesystem-sdk";
 import { vercelBlob } from "files-sdk/vercel-blob";
 
 const fs = new FileSystem({
@@ -85,7 +85,7 @@ If your app already owns a `Files` instance, pass it directly.
 
 ```ts
 import { Files } from "files-sdk";
-import { FileSystem } from "fs-sdk";
+import { FileSystem } from "filesystem-sdk";
 import { fs as localFiles } from "files-sdk/fs";
 
 const files = new Files({
@@ -106,7 +106,7 @@ filesystem.
 
 ```ts
 import { Bash } from "just-bash";
-import { FileSystem } from "fs-sdk";
+import { FileSystem } from "filesystem-sdk";
 
 const filesystem = new FileSystem({
   adapter,
@@ -162,7 +162,7 @@ Use `OverlayFs` directly when you already have an object-storage implementation
 with `upload`, `download`, `head`, `delete`, and `list`.
 
 ```ts
-import { OverlayFs } from "fs-sdk";
+import { OverlayFs } from "filesystem-sdk";
 
 const fs = new OverlayFs({
   storage,
@@ -240,20 +240,21 @@ Use either `adapter` or `files`; do not pass both.
 
 ## Import Model
 
-Provider adapters stay in `files-sdk`. Filesystem APIs stay in `fs-sdk`.
+Provider adapters stay in `files-sdk`. Filesystem APIs stay in
+`filesystem-sdk`.
 
 ```ts
-import { FileSystem, OverlayFs } from "fs-sdk";
-import { overlayFromFilesSdk } from "fs-sdk/files-sdk";
-import { createJustBashFs } from "fs-sdk/just-bash";
+import { FileSystem, OverlayFs } from "filesystem-sdk";
+import { overlayFromFilesSdk } from "filesystem-sdk/files-sdk";
+import { createJustBashFs } from "filesystem-sdk/just-bash";
 
 import { r2 } from "files-sdk/r2";
 import { vercelBlob } from "files-sdk/vercel-blob";
 ```
 
-`fs-sdk` does not re-export provider adapters from paths like `fs-sdk/r2`. This
-keeps provider behavior owned by `files-sdk` and keeps this package focused on
-filesystem behavior.
+`filesystem-sdk` does not re-export provider adapters from paths like
+`filesystem-sdk/r2`. This keeps provider behavior owned by `files-sdk` and keeps
+this package focused on filesystem behavior.
 
 ## Storage Model
 
