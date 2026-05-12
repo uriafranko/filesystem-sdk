@@ -9,6 +9,12 @@ with an API that can be passed directly to
 top: paths, directories, metadata, symlinks, recursive copy/move/remove, and
 Node-style read/write operations over object storage.
 
+## Installation
+
+```bash
+npm install fs-sdk
+```
+
 ## Quick Start
 
 ```bash
