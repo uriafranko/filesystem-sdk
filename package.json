@@ -1,0 +1,13 @@
+{
+  "name": "fs-sdk-workspace",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm -w fs-sdk run build",
+    "test": "npm -w fs-sdk test",
+    "typecheck": "npm -w fs-sdk run typecheck"
+  }
+}

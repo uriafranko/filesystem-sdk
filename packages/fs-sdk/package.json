@@ -1,0 +1,48 @@
+{
+  "name": "fs-sdk",
+  "version": "0.1.0",
+  "description": "A POSIX-like virtual filesystem overlay for files-sdk-compatible object storage, with just-bash integration.",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./files-sdk": {
+      "types": "./dist/files-sdk/index.d.ts",
+      "import": "./dist/files-sdk/index.js"
+    },
+    "./just-bash": {
+      "types": "./dist/just-bash/index.d.ts",
+      "import": "./dist/just-bash/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts src/files-sdk/index.ts src/just-bash/index.ts --format esm --dts --clean",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "files-sdk": ">=0.0.0",
+    "just-bash": ">=0.0.0"
+  },
+  "peerDependenciesMeta": {
+    "files-sdk": {
+      "optional": true
+    },
+    "just-bash": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.14"
+  }
+}
