@@ -45,7 +45,7 @@
   },
   "devDependencies": {
     "@types/node": "^25.7.0",
-    "files-sdk": "^1.2.0",
+    "files-sdk": "^1.7.0",
     "tsup": "^8.5.1",
     "typescript": "^5.9.3",
     "vitest": "^4.0.14"
